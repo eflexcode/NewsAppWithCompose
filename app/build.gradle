@@ -78,4 +78,7 @@ dependencies {
 //Times Formater
     implementation 'org.ocpsoft.prettytime:prettytime:4.0.4.Final'
 
+    implementation("io.coil-kt:coil-compose:2.2.0")
+
+
 }

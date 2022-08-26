@@ -5,11 +5,8 @@ import com.google.gson.annotations.SerializedName
 
 data class News  (
 
-    var status: String? = null,
-
-
+    var status: String,
     var totalResult: Int = 0,
 
-
-    var articles: List<Article>? = null
+    var articles: List<Article>
 )
