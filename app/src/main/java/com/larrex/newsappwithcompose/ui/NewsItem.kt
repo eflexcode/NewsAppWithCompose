@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.larrex.newsappwithcompose.R
+import com.larrex.newsappwithcompose.Util
 import com.larrex.newsappwithcompose.network.model.Article
 import com.larrex.newsappwithcompose.ui.theme.*
 
@@ -88,7 +89,7 @@ fun NewsItem(article: Article) {
                 )
 
                 Text(
-                    text = "12h ago",
+                    text = Util.getTimePassed(article.publishedAt),
                     fontSize = 12.sp,
                     fontStyle = FontStyle.Normal,
                     fontFamily = FontFamily.Default,

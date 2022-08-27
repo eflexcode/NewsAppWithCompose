@@ -8,18 +8,18 @@ import retrofit2.http.QueryMap
 
 interface ApiInterface {
     @GET("top-headlines")
-    fun getNews(
+    suspend fun getNews(
         @Query("country") country: String,
         @Query("apiKey") apikey: String
     ): Call<News>
 
     @GET("top-headlines")
-    fun getNewsWithCategory(
+    suspend fun getNewsWithCategory(
         @Query("country") country: String,
         @Query("category") category: String,
         @Query("apiKey") apikey: String
     ): Call<News>
 
     @GET("everything")
-    fun searchNews(@QueryMap searchMap: Map<String, String>): Call<News>
+    suspend fun searchNews(@QueryMap searchMap: Map<String, String>): Call<News>
 }
