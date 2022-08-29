@@ -21,9 +21,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
+import coil.compose.rememberImagePainter
 import com.larrex.newsappwithcompose.R
 import com.larrex.newsappwithcompose.Util
 import com.larrex.newsappwithcompose.network.model.Article
+import com.larrex.newsappwithcompose.network.model.Source
 import com.larrex.newsappwithcompose.ui.theme.*
 
 private val subTextColor
@@ -42,6 +44,7 @@ private val textColor
 
 @Composable
 fun NewsItem(article: Article) {
+//   val article: Article = Article("","Compose brings a simple and performant way of creating scrolling lists, with fewer lines of code than RecyclerView. Learn how lazy layouts enable adding content on demand, how to use Lazy ","","","https://firebasestorage.googleapis.com/v0/b/liked-a0f31.appspot.com/o/displayImages%2Fgallery%2F1614217903012jpg?alt=media&token=e2b1e9c8-8e6b-4e6e-a8fd-e65221385125","","", Source("",""))
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -51,11 +54,10 @@ fun NewsItem(article: Article) {
     ) {
 
         Column(modifier = Modifier.weight(2f)) {
-
             Text(
                 text = article.title,
                 color = textColor,
-                fontSize = 20.sp,
+                fontSize = 18.sp,
                 fontStyle = FontStyle.Normal,
                 fontFamily = FontFamily.Serif,
                 fontWeight = FontWeight.Bold,
@@ -81,12 +83,12 @@ fun NewsItem(article: Article) {
                     modifier = Modifier.padding(2.dp)
                 )
 
-                Icon(
-                    painter = painterResource(id = R.drawable.time),
-                    contentDescription = null,
-                    tint = subTextColor,
-                    modifier = Modifier.padding(2.dp)
-                )
+//                Icon(
+//                    painter = painterResource(id = R.drawable.time),
+//                    contentDescription = null,
+//                    tint = subTextColor,
+//                    modifier = Modifier.padding(2.dp)
+//                )
 
                 Text(
                     text = Util.getTimePassed(article.publishedAt),
@@ -100,8 +102,8 @@ fun NewsItem(article: Article) {
 
             }
 
-        }
 
+        }
         Card(
             elevation = 10.dp,
             modifier = Modifier
@@ -111,7 +113,9 @@ fun NewsItem(article: Article) {
         ) {
 
             Image(
-                painter = rememberAsyncImagePainter(article.urlToImage),
+                painter = rememberImagePainter(article.urlToImage, builder = {
+                    placeholder(R.color.gray)
+                }),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -120,6 +124,5 @@ fun NewsItem(article: Article) {
 
 
         }
-
     }
 }

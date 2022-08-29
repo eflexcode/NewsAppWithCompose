@@ -1,7 +1,8 @@
 package com.larrex.newsappwithcompose
 
 import org.ocpsoft.prettytime.PrettyTime
-import java.time.LocalDate
+import java.text.ParseException
+import java.text.SimpleDateFormat
 import java.util.*
 
 class Util {
@@ -13,10 +14,20 @@ class Util {
 
         fun getTimePassed(newsTime: String): String {
 
-            val prettyTime = PrettyTime()
-            val date  = Date(newsTime)
+            val prettyTime = PrettyTime(Locale.getDefault().country)
 
-            return prettyTime.format(date)
+            var theTime: String? = null
+
+            val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH)
+
+            try {
+                val date = simpleDateFormat.parse(newsTime)
+                theTime = prettyTime.format(date)
+            } catch (e: ParseException) {
+                e.printStackTrace()
+            }
+
+            return "• $theTime"
         }
 
     }

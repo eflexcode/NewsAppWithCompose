@@ -9,19 +9,15 @@ class NewsClient {
 
     companion object{
 
-        private  var retrofit : Retrofit? = null
+//        private  var retrofit : Retrofit = null
 
-        fun getNewsClient(): Retrofit? {
+        fun getNewsClient(): Retrofit {
 
-            if (retrofit == null){
 
-                retrofit = Retrofit.Builder()
-                    .baseUrl(Util.Base_url)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build()
-            }
-
-            return retrofit
+            return Retrofit.Builder()
+                .baseUrl(Util.Base_url)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
         }
 
     }

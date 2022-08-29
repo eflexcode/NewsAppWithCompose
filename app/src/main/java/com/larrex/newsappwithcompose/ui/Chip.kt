@@ -54,13 +54,15 @@ private val chipTextColorSelected
 fun CategoryChip(
     chipText: String,
     chipSelected: Boolean = false,
-    onChipSelected: (String) -> Unit
+    onChipSelected: (String) -> Unit,
+    modifier: Modifier =
+        Modifier
+            .padding(4.dp)
+            .clip(RoundedCornerShape(30.dp))
 ) {
 
     Surface(
-        modifier = Modifier
-            .padding(4.dp)
-            .clip(RoundedCornerShape(30.dp)),
+        modifier = modifier,
         elevation = 10.dp,
         color = if (chipSelected) chipBackgroundColorSelected else chipBackgroundColor,
 

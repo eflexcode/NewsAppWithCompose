@@ -8,9 +8,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.larrex.newsappwithcompose.network.apiInterface.NewsState
+import com.larrex.newsappwithcompose.network.model.Article
 import com.larrex.newsappwithcompose.network.model.News
 import com.larrex.newsappwithcompose.repository.NewsRepository
-import java.util.concurrent.Flow
+import kotlinx.coroutines.flow.Flow
 
 class NewsViewModel : ViewModel() {
 
@@ -20,12 +21,15 @@ class NewsViewModel : ViewModel() {
 
     private val repository = NewsRepository()
 
-    suspend fun getNews(
-        category: String?,
+     fun getNews(
+        category: String,
         context: Context
-    ): kotlinx.coroutines.flow.Flow<NewsState<News?>> {
+    ): Flow<NewsState<News?>> {
 
         return repository.getNews(category, context)
+    }
+    fun runNews(category: String, context: Context): Flow<List<Article>>  {
+        return repository.runNews(category, context)
     }
 
 }
