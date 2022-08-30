@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.Flow
 class NewsViewModel : ViewModel() {
 
     private val selectedChipText: MutableState<String> = mutableStateOf("All")
+     val searchText: MutableState<String> = mutableStateOf("Android")
      val url: MutableState<String> = mutableStateOf("")
 
     var mUrl : String = ""
@@ -39,16 +40,12 @@ class NewsViewModel : ViewModel() {
 
     private val repository = NewsRepository()
 
-    fun getNews(
-        category: String,
-        context: Context
-    ): Flow<NewsState<News?>> {
 
-        return repository.getNews(category, context)
+    fun runNews(category: String): Flow<List<Article>> {
+        return repository.runNews(category)
     }
-
-    fun runNews(category: String, context: Context): Flow<List<Article>> {
-        return repository.runNews(category, context)
+    fun searchNews(): Flow<List<Article>> {
+        return repository.searchNews(searchText.value)
     }
 
 }

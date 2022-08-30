@@ -29,27 +29,13 @@ import com.larrex.newsappwithcompose.network.model.Article
 import com.larrex.newsappwithcompose.network.model.Source
 import com.larrex.newsappwithcompose.ui.theme.*
 
-private val subTextColor
-    @Composable
-    get() = if (isSystemInDarkTheme())
-        SubTextColorDark
-    else
-        SubTextColor
-
-private val textColor
-    @Composable
-    get() = if (isSystemInDarkTheme())
-        TextColorDark
-    else
-        TextColor
-
 @Composable
 fun NewsItem(article: Article, onClicked: () -> Unit) {
 //   val article: Article = Article("","Compose brings a simple and performant way of creating scrolling lists, with fewer lines of code than RecyclerView. Learn how lazy layouts enable adding content on demand, how to use Lazy ","","","https://firebasestorage.googleapis.com/v0/b/liked-a0f31.appspot.com/o/displayImages%2Fgallery%2F1614217903012jpg?alt=media&token=e2b1e9c8-8e6b-4e6e-a8fd-e65221385125","","", Source("",""))
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 5.dp).toggleable(value = true, onValueChange = {
+            .padding(start = 0.dp).toggleable(value = true, onValueChange = {
                 onClicked()
             }),
         verticalAlignment = Alignment.CenterVertically,
@@ -59,19 +45,19 @@ fun NewsItem(article: Article, onClicked: () -> Unit) {
         Column(modifier = Modifier.weight(2f)) {
             Text(
                 text = article.title,
-                color = textColor,
+                color = Util.textColor,
                 fontSize = 18.sp,
                 fontStyle = FontStyle.Normal,
                 fontFamily = FontFamily.Serif,
                 fontWeight = FontWeight.Bold,
                 maxLines = 3,
                 overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.padding(end = 5.dp)
+                modifier = Modifier.padding(end = 5.dp, start = 5.dp)
             )
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 10.dp),
+                    .padding(top = 5.dp,start = 5.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Start
             ) {
@@ -82,7 +68,7 @@ fun NewsItem(article: Article, onClicked: () -> Unit) {
                     fontStyle = FontStyle.Normal,
                     fontFamily = FontFamily.Default,
                     fontWeight = FontWeight.SemiBold,
-                    color = subTextColor,
+                    color = Util.subTextColor,
                     modifier = Modifier.padding(2.dp)
                 )
 
@@ -99,7 +85,7 @@ fun NewsItem(article: Article, onClicked: () -> Unit) {
                     fontStyle = FontStyle.Normal,
                     fontFamily = FontFamily.Default,
                     fontWeight = FontWeight.SemiBold,
-                    color = subTextColor,
+                    color = Util.subTextColor,
                     modifier = Modifier.padding(2.dp)
                 )
 
@@ -110,7 +96,7 @@ fun NewsItem(article: Article, onClicked: () -> Unit) {
         Card(
             elevation = 10.dp,
             modifier = Modifier
-                .padding(top = 10.dp, end = 5.dp, start = 5.dp, bottom = 10.dp)
+                .padding(top = 10.dp, end = 10.dp, start = 5.dp, bottom = 10.dp)
                 .clip(RoundedCornerShape(25.dp))
                 .size(100.dp)
         ) {

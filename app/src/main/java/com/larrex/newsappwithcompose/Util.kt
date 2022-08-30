@@ -1,5 +1,8 @@
 package com.larrex.newsappwithcompose
 
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.Composable
+import com.larrex.newsappwithcompose.ui.theme.*
 import org.ocpsoft.prettytime.PrettyTime
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -37,6 +40,34 @@ class Util {
             return "Today "+SimpleDateFormat("MMM-dd").format(cal.getTime())
 
         }
+
+         val subTextColor
+            @Composable
+            get() = if (isSystemInDarkTheme())
+                SubTextColorDark
+            else
+                SubTextColor
+
+         val textColor
+            @Composable
+            get() = if (isSystemInDarkTheme())
+                TextColorDark
+            else
+                TextColor
+
+         val chipBackgroundColor
+            @Composable
+            get() = if (isSystemInDarkTheme())
+                DarkChipBackground
+            else
+                LightChipBackground
+
+         val chipBackgroundColorSelected
+            @Composable
+            get() = if (isSystemInDarkTheme())
+                DarkChipSelectedBackground
+            else
+                LightChipSelectedBackground
 
     }
 

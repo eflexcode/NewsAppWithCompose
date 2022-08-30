@@ -68,7 +68,7 @@ class MainActivity : ComponentActivity() {
                         }
                         composable("search") {
 
-                            SearchBox()
+                            SearchBox(navController)
 
                         }
                     }
@@ -80,46 +80,16 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-private val subTextColor
-    @Composable
-    get() = if (isSystemInDarkTheme())
-        SubTextColorDark
-    else
-        SubTextColor
-
-private val textColor
-    @Composable
-    get() = if (isSystemInDarkTheme())
-        TextColorDark
-    else
-        TextColor
-
-private val chipBackgroundColor
-    @Composable
-    get() = if (isSystemInDarkTheme())
-        DarkChipBackground
-    else
-        LightChipBackground
-
-private val chipBackgroundColorSelected
-    @Composable
-    get() = if (isSystemInDarkTheme())
-        DarkChipSelectedBackground
-    else
-        LightChipSelectedBackground
-
 @Composable
 fun BaseUi(context: Context, navController: NavHostController) {
 
     val listOfChips = listOf("All", "Business", "Entertainment", "Science", "Technology", "Sports")
     val viewModel = viewModel<NewsViewModel>()
 
-    val newsItem by viewModel.runNews(viewModel.getSelectedChipText1().toLowerCase(), context)
+    val newsItem by viewModel.runNews(viewModel.getSelectedChipText1().toLowerCase())
         .collectAsState(initial = emptyList())
 
     val TAG = "MainActivity"
-
-//    val articleList =  newsItem?.data?.articles!!
 
     Box(
         modifier = Modifier
@@ -127,7 +97,7 @@ fun BaseUi(context: Context, navController: NavHostController) {
             .fillMaxSize()
 
     ) {
-        Log.d(TAG, "BaseUi: " + newsItem)
+//        Log.d(TAG, "BaseUi: " + newsItem)
 
         LazyColumn() {
 
@@ -156,7 +126,7 @@ fun BaseUi(context: Context, navController: NavHostController) {
                             fontStyle = FontStyle.Normal,
                             fontFamily = FontFamily.Default,
                             fontWeight = FontWeight.SemiBold,
-                            color = subTextColor
+                            color = Util.subTextColor
                         )
                     }
 
@@ -212,7 +182,7 @@ fun BaseUi(context: Context, navController: NavHostController) {
                 Text(
                     text = if (newsItem.size > 0) newsItem[0].title else "",
                     modifier = Modifier.padding(end = 16.dp, top = 15.dp, start = 16.dp),
-                    color = textColor,
+                    color = Util.textColor,
                     fontSize = 23.sp,
                     fontStyle = FontStyle.Normal,
                     fontFamily = FontFamily.Serif,
@@ -235,7 +205,7 @@ fun BaseUi(context: Context, navController: NavHostController) {
                         fontStyle = FontStyle.Normal,
                         fontFamily = FontFamily.Default,
                         fontWeight = FontWeight.SemiBold,
-                        color = subTextColor,
+                        color = Util.subTextColor,
                         modifier = Modifier.padding(2.dp)
                     )
 
@@ -245,7 +215,7 @@ fun BaseUi(context: Context, navController: NavHostController) {
                         fontStyle = FontStyle.Normal,
                         fontFamily = FontFamily.Default,
                         fontWeight = FontWeight.SemiBold,
-                        color = subTextColor,
+                        color = Util.subTextColor,
                         modifier = Modifier.padding(2.dp)
                     )
 
@@ -265,8 +235,6 @@ fun BaseUi(context: Context, navController: NavHostController) {
                             onChipSelected = {
 
                                 viewModel.setSelectedChipText(it)
-
-//                                viewModel.selectedChipText.value = it
 
                             }, modifier = Modifier
                                 .padding(4.dp)

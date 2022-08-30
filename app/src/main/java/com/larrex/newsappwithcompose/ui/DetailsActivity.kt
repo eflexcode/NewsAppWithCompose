@@ -37,12 +37,6 @@ private val textColor
         TextColorDark
     else
         TextColor
-//private val textColor
-//    @Composable
-//    get() = if (isSystemInDarkTheme())
-//        TextColorDark
-//    else
-//        TextColor
 
 
 @Composable
