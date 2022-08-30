@@ -2,7 +2,6 @@ package com.larrex.newsappwithcompose.ui
 
 import android.content.Context
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -19,7 +18,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
@@ -30,17 +28,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import coil.compose.rememberAsyncImagePainter
+import androidx.navigation.NavHostController
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import coil.compose.rememberImagePainter
-import com.larrex.newsappwithcompose.CategoryChip
 import com.larrex.newsappwithcompose.R
 import com.larrex.newsappwithcompose.Util
-import com.larrex.newsappwithcompose.network.apiInterface.NewsState
-import com.larrex.newsappwithcompose.network.apiInterface.Status
-import com.larrex.newsappwithcompose.network.model.Article
-import com.larrex.newsappwithcompose.network.model.News
 import com.larrex.newsappwithcompose.ui.theme.*
 import com.larrex.newsappwithcompose.viewmodel.NewsViewModel
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 class MainActivity : ComponentActivity() {
 
@@ -48,15 +48,32 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
-
         setContent {
             NewsAppWithComposeTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    BaseUi(applicationContext)
+                    val navController = rememberNavController()
+
+                    NavHost(navController = navController, startDestination = "home") {
+
+                        composable("home") {
+                            BaseUi(context = applicationContext, navController = navController)
+                        }
+                        composable("details/{url}/{title}", arguments = listOf(navArgument("url"){
+                            type = NavType.StringType
+                        })) { arg->
+                            LoadDetails(arg.arguments?.getString("url"),arg.arguments?.getString("title"),applicationContext,navController)
+                        }
+                        composable("search") {
+
+                            SearchBox()
+
+                        }
+                    }
+
+//                    BaseUi(applicationContext, navController)
                 }
             }
         }
@@ -92,12 +109,12 @@ private val chipBackgroundColorSelected
         LightChipSelectedBackground
 
 @Composable
-fun BaseUi(context: Context) {
+fun BaseUi(context: Context, navController: NavHostController) {
 
-    val listOfChips = listOf("All", "Business", "Entertainment" ,"Science", "Technology", "Sports")
+    val listOfChips = listOf("All", "Business", "Entertainment", "Science", "Technology", "Sports")
     val viewModel = viewModel<NewsViewModel>()
 
-    val newsItem by viewModel.runNews(viewModel.selectedChipText.value.toLowerCase(), context)
+    val newsItem by viewModel.runNews(viewModel.getSelectedChipText1().toLowerCase(), context)
         .collectAsState(initial = emptyList())
 
     val TAG = "MainActivity"
@@ -106,7 +123,7 @@ fun BaseUi(context: Context) {
 
     Box(
         modifier = Modifier
-            .padding(top = 0.dp, bottom = 0.dp, end = 10.dp, start = 10.dp)
+            .padding(top = 0.dp, bottom = 0.dp, end = 5.dp, start = 5.dp)
             .fillMaxSize()
 
     ) {
@@ -134,7 +151,7 @@ fun BaseUi(context: Context) {
                             fontWeight = FontWeight.Bold
                         )
                         Text(
-                            text = "Today February 23",
+                            text = Util.getTodayDate(),
                             fontSize = 12.sp,
                             fontStyle = FontStyle.Normal,
                             fontFamily = FontFamily.Default,
@@ -143,7 +160,9 @@ fun BaseUi(context: Context) {
                         )
                     }
 
-                    IconButton(onClick = { /*TODO*/ }, modifier = Modifier.weight(0.3f)) {
+                    IconButton(onClick = {
+                                         navController.navigate("search")
+                    }, modifier = Modifier.weight(0.3f)) {
 
                         Icon(
                             painter = painterResource(id = R.drawable.search),
@@ -176,23 +195,18 @@ fun BaseUi(context: Context) {
                             .size(250.dp)
                     )
 
-                        CategoryChip(
-                            "Trending",
-                            chipSelected = true,
-                            onChipSelected = {
+                    CategoryChip(
+                        "Trending",
+                        chipSelected = true,
+                        onChipSelected = {
 
 
-                            },modifier = Modifier.padding(top = 20.dp, end = 5.dp, start = 20.dp).clip(RoundedCornerShape(30.dp)))
+                        }, modifier = Modifier
+                            .padding(top = 20.dp, end = 5.dp, start = 20.dp)
+                            .clip(RoundedCornerShape(30.dp))
+                    )
 
 
-//                    Card(
-//                        modifier = Modifier
-//                            .padding()
-//                            .clip(RoundedCornerShape(50.dp))
-//                    ) {
-//
-//
-//                    }
                 }
 
                 Text(
@@ -225,13 +239,6 @@ fun BaseUi(context: Context) {
                         modifier = Modifier.padding(2.dp)
                     )
 
-//                    Icon(
-//                        painter = painterResource(id = R.drawable.time),
-//                        contentDescription = null,
-//                        tint = subTextColor,
-//                        modifier = Modifier.padding(2.dp)
-//                    )
-
                     Text(
                         text = if (newsItem.size > 0) Util.getTimePassed(newsItem[0].publishedAt) else "",
                         fontSize = 12.sp,
@@ -254,14 +261,17 @@ fun BaseUi(context: Context) {
 
                         CategoryChip(
                             it,
-                            chipSelected = it == viewModel.selectedChipText.value,
+                            chipSelected = it == viewModel.getSelectedChipText1(),
                             onChipSelected = {
 
-                                viewModel.selectedChipText.value = it
+                                viewModel.setSelectedChipText(it)
+
+//                                viewModel.selectedChipText.value = it
 
                             }, modifier = Modifier
                                 .padding(4.dp)
-                                .clip(RoundedCornerShape(30.dp)))
+                                .clip(RoundedCornerShape(30.dp))
+                        )
                     }
 
                 }
@@ -270,7 +280,11 @@ fun BaseUi(context: Context) {
 
             items(newsItem) {
 
-                NewsItem(it)
+                NewsItem(it, onClicked = {
+                    val encodedUrl = URLEncoder.encode(it.url, StandardCharsets.UTF_8.toString())
+                    navController.navigate("details/"+encodedUrl+"/"+it.title)
+
+                })
 
             }
         }
@@ -280,7 +294,6 @@ fun BaseUi(context: Context) {
 
 
 }
-
 
 
 @Preview(showBackground = true, widthDp = 390, heightDp = 800)

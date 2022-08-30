@@ -30,6 +30,14 @@ class Util {
             return "• $theTime"
         }
 
+        fun getTodayDate(): String{
+
+            val cal = Calendar.getInstance()
+
+            return "Today "+SimpleDateFormat("MMM-dd").format(cal.getTime())
+
+        }
+
     }
 
 }

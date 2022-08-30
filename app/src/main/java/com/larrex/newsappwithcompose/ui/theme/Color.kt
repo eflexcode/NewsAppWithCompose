@@ -29,3 +29,5 @@ val TextColorDark = Color(0xFFffffff)
 
 val SubTextColor = Color(0xFF9aa1ad)
 val SubTextColorDark = Color(0xFF9fa6b1)
+
+val searchBarColor = Color(0xFFDFDFDF)

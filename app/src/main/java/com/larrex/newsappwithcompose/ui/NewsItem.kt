@@ -3,6 +3,7 @@ package com.larrex.newsappwithcompose.ui
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
@@ -43,12 +44,14 @@ private val textColor
         TextColor
 
 @Composable
-fun NewsItem(article: Article) {
+fun NewsItem(article: Article, onClicked: () -> Unit) {
 //   val article: Article = Article("","Compose brings a simple and performant way of creating scrolling lists, with fewer lines of code than RecyclerView. Learn how lazy layouts enable adding content on demand, how to use Lazy ","","","https://firebasestorage.googleapis.com/v0/b/liked-a0f31.appspot.com/o/displayImages%2Fgallery%2F1614217903012jpg?alt=media&token=e2b1e9c8-8e6b-4e6e-a8fd-e65221385125","","", Source("",""))
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 5.dp),
+            .padding(start = 5.dp).toggleable(value = true, onValueChange = {
+                onClicked()
+            }),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
