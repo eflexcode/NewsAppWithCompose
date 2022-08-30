@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.larrex.newsappwithcompose.R
+import com.larrex.newsappwithcompose.Util
 import com.larrex.newsappwithcompose.ui.theme.searchBarColor
 import com.larrex.newsappwithcompose.viewmodel.NewsViewModel
 import java.net.URLEncoder
@@ -74,7 +75,7 @@ fun SearchBox(navController : NavController) {
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(5.dp)
-                                .background(searchBarColor, RoundedCornerShape(10.dp))
+                                .background(Util.searchBarBackground, RoundedCornerShape(10.dp))
                                 .focusRequester(focusRequester),
                             textStyle = TextStyle(fontSize = 16.sp),
                             colors = TextFieldDefaults.textFieldColors(

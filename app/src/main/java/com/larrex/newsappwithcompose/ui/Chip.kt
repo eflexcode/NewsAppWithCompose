@@ -15,37 +15,9 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.larrex.newsappwithcompose.Util
 import com.larrex.newsappwithcompose.ui.theme.*
 
-
-private val chipBackgroundColor
-    @Composable
-    get() = if (isSystemInDarkTheme())
-        DarkChipBackground
-    else
-        LightChipBackground
-
-private val chipBackgroundColorSelected
-    @Composable
-    get() = if (isSystemInDarkTheme())
-        DarkChipSelectedBackground
-    else
-        LightChipSelectedBackground
-
-
-private val chipTextColor
-    @Composable
-    get() = if (isSystemInDarkTheme())
-        DarkChipText
-    else
-        LightChipText
-
-private val chipTextColorSelected
-    @Composable
-    get() = if (isSystemInDarkTheme())
-        DarkChipTextSelected
-    else
-        LightChipTextSelected
 
 @Composable
 fun CategoryChip(
@@ -61,7 +33,7 @@ fun CategoryChip(
     Surface(
         modifier = modifier,
         elevation = 10.dp,
-        color = if (chipSelected) chipBackgroundColorSelected else chipBackgroundColor,
+        color = if (chipSelected) Util.chipBackgroundColorSelected else Util.chipBackgroundColor,
 
         ) {
 
@@ -77,7 +49,7 @@ fun CategoryChip(
                 fontStyle = FontStyle.Normal,
                 fontFamily = FontFamily.Default,
                 fontWeight = FontWeight.Medium,
-                color = if (chipSelected) chipTextColorSelected else chipTextColor
+                color = if (chipSelected) Util.chipTextColorSelected else Util.chipTextColor
             )
 
         }

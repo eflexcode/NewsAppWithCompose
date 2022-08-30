@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">News App With Compose</string>
     <string name="error">Something went wrong</string>
+    <string name="world_news">World News</string>
+    <string name="trending">Trending</string>
+    <string name="headline">Headline.</string>
 </resources>

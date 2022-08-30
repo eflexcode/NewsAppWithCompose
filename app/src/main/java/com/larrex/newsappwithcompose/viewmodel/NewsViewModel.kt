@@ -16,10 +16,7 @@ import kotlinx.coroutines.flow.Flow
 class NewsViewModel : ViewModel() {
 
     private val selectedChipText: MutableState<String> = mutableStateOf("All")
-     val searchText: MutableState<String> = mutableStateOf("Android")
-     val url: MutableState<String> = mutableStateOf("")
-
-    var mUrl : String = ""
+     val searchText: MutableState<String> = mutableStateOf("Jetpack compose")
 
     fun getSelectedChipText1(): String {
         return selectedChipText.value
@@ -29,17 +26,7 @@ class NewsViewModel : ViewModel() {
         selectedChipText.value = text
     }
 
-
-//    fun getUrl(): MutableState<String> {
-//        return url
-//    }
-//
-//    fun setUrl(text: String) {
-//        url.value = text
-//    }
-
     private val repository = NewsRepository()
-
 
     fun runNews(category: String): Flow<List<Article>> {
         return repository.runNews(category)

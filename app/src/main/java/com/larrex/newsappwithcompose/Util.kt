@@ -11,9 +11,16 @@ import java.util.*
 class Util {
 
     companion object {
+
         const val Base_url = "https://newsapi.org/v2/"
         const val DATA_STORE_CATEGORY_KEY = "current_category"
         const val ApiKey = "2f3a84ce7aa542d09c74f7e58cc2375c"
+        const val Home = "home"
+        const val Search = "search"
+        const val DetailsLink = "details/{url}/{title}"
+        const val Details = "details"
+        const val Url = "url"
+        const val Title = "title"
 
         fun getTimePassed(newsTime: String): String {
 
@@ -68,6 +75,28 @@ class Util {
                 DarkChipSelectedBackground
             else
                 LightChipSelectedBackground
+
+
+         val chipTextColor
+            @Composable
+            get() = if (isSystemInDarkTheme())
+                DarkChipText
+            else
+                LightChipText
+
+         val chipTextColorSelected
+            @Composable
+            get() = if (isSystemInDarkTheme())
+                DarkChipTextSelected
+            else
+                LightChipTextSelected
+
+        val searchBarBackground
+            @Composable
+            get() = if (isSystemInDarkTheme())
+                searchBarColorDark
+            else
+                searchBarColor
 
     }
 

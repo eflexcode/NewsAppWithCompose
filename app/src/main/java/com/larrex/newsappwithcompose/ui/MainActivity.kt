@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -41,6 +42,7 @@ import com.larrex.newsappwithcompose.ui.theme.*
 import com.larrex.newsappwithcompose.viewmodel.NewsViewModel
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
+import kotlin.random.Random
 
 class MainActivity : ComponentActivity() {
 
@@ -56,17 +58,22 @@ class MainActivity : ComponentActivity() {
                 ) {
                     val navController = rememberNavController()
 
-                    NavHost(navController = navController, startDestination = "home") {
+                    NavHost(navController = navController, startDestination = Util.Home) {
 
-                        composable("home") {
-                            BaseUi(context = applicationContext, navController = navController)
+                        composable(Util.Home) {
+                            BaseUi(navController = navController)
                         }
-                        composable("details/{url}/{title}", arguments = listOf(navArgument("url"){
+                        composable(Util.DetailsLink, arguments = listOf(navArgument(Util.Url) {
                             type = NavType.StringType
-                        })) { arg->
-                            LoadDetails(arg.arguments?.getString("url"),arg.arguments?.getString("title"),applicationContext,navController)
+                        })) { arg ->
+                            LoadDetails(
+                                arg.arguments?.getString(Util.Url),
+                                arg.arguments?.getString(Util.Title),
+                                applicationContext,
+                                navController
+                            )
                         }
-                        composable("search") {
+                        composable(Util.Search) {
 
                             SearchBox(navController)
 
@@ -81,13 +88,16 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun BaseUi(context: Context, navController: NavHostController) {
+fun BaseUi(navController: NavHostController) {
 
     val listOfChips = listOf("All", "Business", "Entertainment", "Science", "Technology", "Sports")
     val viewModel = viewModel<NewsViewModel>()
 
     val newsItem by viewModel.runNews(viewModel.getSelectedChipText1().toLowerCase())
         .collectAsState(initial = emptyList())
+
+    val headerArticle = java.util.Random().nextInt(if (newsItem.size > 0) newsItem.size else 1)
+
 
     val TAG = "MainActivity"
 
@@ -112,7 +122,7 @@ fun BaseUi(context: Context, navController: NavHostController) {
 
                     Column(modifier = Modifier.weight(2f)) {
                         Text(
-                            text = "Headline.",
+                            text = stringResource(id = R.string.headline),
                             modifier = Modifier.padding(end = 16.dp, top = 10.dp),
                             color = Green,
                             fontSize = 25.sp,
@@ -131,7 +141,7 @@ fun BaseUi(context: Context, navController: NavHostController) {
                     }
 
                     IconButton(onClick = {
-                                         navController.navigate("search")
+                        navController.navigate(Util.Search)
                     }, modifier = Modifier.weight(0.3f)) {
 
                         Icon(
@@ -141,7 +151,8 @@ fun BaseUi(context: Context, navController: NavHostController) {
 
                     }
                 }
-                if (newsItem.size > 0) newsItem[0].title else ""
+
+
                 Card(
                     elevation = 10.dp,
                     modifier = Modifier
@@ -151,7 +162,7 @@ fun BaseUi(context: Context, navController: NavHostController) {
 
                     Image(
                         painter = rememberImagePainter(
-                            if (newsItem.size > 0) newsItem[0].urlToImage else "",
+                            if (newsItem.size > 0) newsItem[headerArticle].urlToImage else "",
                             builder = {
                                 placeholder(R.color.gray)
                             }),
@@ -166,7 +177,7 @@ fun BaseUi(context: Context, navController: NavHostController) {
                     )
 
                     CategoryChip(
-                        "Trending",
+                        stringResource(id = R.string.trending),
                         chipSelected = true,
                         onChipSelected = {
 
@@ -180,7 +191,7 @@ fun BaseUi(context: Context, navController: NavHostController) {
                 }
 
                 Text(
-                    text = if (newsItem.size > 0) newsItem[0].title else "",
+                    text = if (newsItem.size > 0) newsItem[headerArticle].title else "",
                     modifier = Modifier.padding(end = 16.dp, top = 15.dp, start = 16.dp),
                     color = Util.textColor,
                     fontSize = 23.sp,
@@ -200,7 +211,7 @@ fun BaseUi(context: Context, navController: NavHostController) {
                 ) {
 
                     Text(
-                        text = "World News",
+                        text = stringResource(id = R.string.world_news),
                         fontSize = 12.sp,
                         fontStyle = FontStyle.Normal,
                         fontFamily = FontFamily.Default,
@@ -210,7 +221,7 @@ fun BaseUi(context: Context, navController: NavHostController) {
                     )
 
                     Text(
-                        text = if (newsItem.size > 0) Util.getTimePassed(newsItem[0].publishedAt) else "",
+                        text = if (newsItem.size > 0) Util.getTimePassed(newsItem[headerArticle].publishedAt) else "",
                         fontSize = 12.sp,
                         fontStyle = FontStyle.Normal,
                         fontFamily = FontFamily.Default,
@@ -250,7 +261,7 @@ fun BaseUi(context: Context, navController: NavHostController) {
 
                 NewsItem(it, onClicked = {
                     val encodedUrl = URLEncoder.encode(it.url, StandardCharsets.UTF_8.toString())
-                    navController.navigate("details/"+encodedUrl+"/"+it.title)
+                    navController.navigate(Util.Details+"/" + encodedUrl + "/" + it.title)
 
                 })
 
