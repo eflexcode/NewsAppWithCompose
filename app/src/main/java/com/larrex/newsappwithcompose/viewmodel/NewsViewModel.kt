@@ -11,9 +11,12 @@ import com.larrex.newsappwithcompose.network.apiInterface.NewsState
 import com.larrex.newsappwithcompose.network.model.Article
 import com.larrex.newsappwithcompose.network.model.News
 import com.larrex.newsappwithcompose.repository.NewsRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class NewsViewModel : ViewModel() {
+@HiltViewModel
+class NewsViewModel @Inject constructor(private var repository : NewsRepository): ViewModel() {
 
     private val selectedChipText: MutableState<String> = mutableStateOf("All")
      val searchText: MutableState<String> = mutableStateOf("Jetpack compose")
@@ -26,7 +29,6 @@ class NewsViewModel : ViewModel() {
         selectedChipText.value = text
     }
 
-    private val repository = NewsRepository()
 
     fun runNews(category: String): Flow<List<Article>> {
         return repository.runNews(category)

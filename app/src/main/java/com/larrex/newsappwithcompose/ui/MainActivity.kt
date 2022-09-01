@@ -28,6 +28,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -40,10 +41,12 @@ import com.larrex.newsappwithcompose.R
 import com.larrex.newsappwithcompose.Util
 import com.larrex.newsappwithcompose.ui.theme.*
 import com.larrex.newsappwithcompose.viewmodel.NewsViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 import kotlin.random.Random
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
 
@@ -91,13 +94,12 @@ class MainActivity : ComponentActivity() {
 fun BaseUi(navController: NavHostController) {
 
     val listOfChips = listOf("All", "Business", "Entertainment", "Science", "Technology", "Sports")
-    val viewModel = viewModel<NewsViewModel>()
+    val viewModel = hiltViewModel<NewsViewModel>()
 
     val newsItem by viewModel.runNews(viewModel.getSelectedChipText1().toLowerCase())
         .collectAsState(initial = emptyList())
 
     val headerArticle = java.util.Random().nextInt(if (newsItem.size > 0) newsItem.size else 1)
-
 
     val TAG = "MainActivity"
 

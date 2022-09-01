@@ -18,6 +18,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.larrex.newsappwithcompose.R
@@ -33,7 +34,7 @@ fun SearchBox(navController : NavController) {
     val focusRequester = remember { FocusRequester() }
     var value by remember { mutableStateOf(TextFieldValue("")) }
 
-    val viewModel = viewModel<NewsViewModel>()
+    val viewModel = hiltViewModel<NewsViewModel>()
 
     val searchedNewsItem by viewModel.searchNews().collectAsState(initial = emptyList())
 
