@@ -16,7 +16,7 @@ Get the app in [Google play store](https://play.google.com/store/apps/details?id
 <p float="left">
 
   <img src="/image/image5.gif" width="250" />
-  <img src="image/image.png" width="250" />
+  <img src="/image/image.png" width="250" />
   <img src="/image/image1.png" width="250" /> 
   <img src="/image/image2.png" width="250" /> 
   <img src="/image/image3.png" width="250" /> 
