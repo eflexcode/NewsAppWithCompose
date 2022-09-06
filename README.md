@@ -14,8 +14,12 @@
 [comment]: <> (![ScreenShot]&#40;/image/image5.gif&#41;)
 
 <p float="left">
-  <img src="image/image.png" width="100" />
-  <img src="/image/image1.png" width="100" /> 
-  <img src="/img3.png" width="100" />
+  <img src="image/image.png" width="300" />
+  <img src="/image/image1.png" width="300" /> 
+  <img src="/image/image1.png" width="300" /> 
+  <img src="/image/image2.png" width="300" /> 
+  <img src="/image/image3.png" width="300" /> 
+  <img src="/image/image4.png" width="300" /> 
+  <img src="/image/image5.png" width="300" /> 
 </p>
 
