@@ -1,5 +1,5 @@
-## News App With Compose
-# developed by eze larry ifeanyi to test his compose skills
+# News App With Compose
+## developed by eze larry ifeanyi to test his compose skills
 
 [comment]: <> (![ScreenShot]&#40;/image/image.png&#41;)
 
