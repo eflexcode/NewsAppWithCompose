@@ -32,6 +32,7 @@ import java.nio.charset.StandardCharsets
 fun SearchBox(navController : NavController) {
 
     val focusRequester = remember { FocusRequester() }
+
     var value by remember { mutableStateOf(TextFieldValue("")) }
 
     val viewModel = hiltViewModel<NewsViewModel>()
